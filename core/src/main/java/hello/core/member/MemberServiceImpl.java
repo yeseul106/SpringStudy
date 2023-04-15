@@ -2,9 +2,16 @@ package hello.core.member;
 
 public class MemberServiceImpl implements MemberService{
 
-    //실제 할당하는 부분이 추상화에도 의존하고, 구현체에도 의존 (MemberRepository,MemoryMemberRepository 둘다 의존)
-    //DIP 위반 !
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
+    private final MemberRepository memberRepository;
+
+    //* 생성자 주입
+    // 생성자를 통해서 의존관계를 주입함 (추상화에만 의존할 수 있도록)
+    // 이렇게 하면 MemberRepository 인터페이스에만 의존할 수 있음 !
+
+    public MemberServiceImpl(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+
     @Override
     public void join(Member member) {
         memberRepository.save(member);
